@@ -10,6 +10,7 @@ namespace wyexpand
   vecint calcInitialParent(const vecint &seq);
   vecint calcParent(const vecint &seq, const vecint &parents);
   vecint succ(const vecint ord);
+  bool isAllMinusOne1(const vecint &vec);
   class Expander
   {
   public:

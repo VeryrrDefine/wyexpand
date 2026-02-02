@@ -12,10 +12,16 @@
 typedef std::vector<int> vecint;
 namespace wyexpand
 {
+  bool isAllMinusOne1(const vecint &vec)
+  {
+    return std::all_of(vec.begin(), vec.end(),
+                       [](int x)
+                       { return x == -1; });
+  }
   vecint succ(const vecint ord)
   {
     vecint ord1 = ord;
-    if (ord1.size() == 0)
+    if (ord1.empty())
     {
       ord1.push_back(1);
     }
@@ -60,7 +66,7 @@ namespace wyexpand
     {
       for (int j = i - 1; j >= 0; j--)
       {
-        if (seq[j] < seq[i] && parentSet.count(j))
+        if (seq[j] < seq[i] && seq[j] != 0 && parentSet.count(j))
         {
           seqParents[i] = j;
           break;
@@ -77,7 +83,7 @@ namespace wyexpand
   {
     vecint currentSeq(this->initialSeq);
     vecint rawParents(calcInitialParent(currentSeq));
-    if (this->parents[{0}].back() == -1)
+    if (rawParents.back() == -1)
     {
       std::clog << "Last Term is 1" << std::endl;
 
@@ -99,10 +105,11 @@ namespace wyexpand
       int lastParentValue = seq.at(lastParent);
 
       vecint nextSeq;
-      for (auto i = seq.begin(); i != seq.end(); i++)
+      for (int i = 0; i < seq.size(); ++i)
       {
-        if (parents.at(*i) != -1)
-          nextSeq.push_back(seq.at(*i) - seq.at(parents.at(*i)));
+        std::cout << i << std::endl;
+        if (parents.at(i) != -1)
+          nextSeq.push_back(seq.at(i) - seq.at(parents.at(i)));
         else
           nextSeq.push_back(0);
       }
@@ -112,6 +119,11 @@ namespace wyexpand
       vecint nextparents = calcParent(nextSeq, parents);
 
       this->parents[level] = nextparents;
+      if (isAllMinusOne1(nextparents))
+      {
+        std::clog << "All Minus One, check for ω+ rows " << std::endl;
+        break;
+      }
       // TODO: ω行处理
     }
     return currentSeq;

@@ -23,7 +23,7 @@ std::string seq_to_string(std::vector<int> seq)
 
 int main()
 {
-    std::vector<int> a{1, 1};
+    std::vector<int> a{1, 2};
     Expander expander(a);
     std::cout << "Initial Sequence: " << seq_to_string(expander.initialSeq) << std::endl;
     std::vector<int> result(expander.startExpand());
