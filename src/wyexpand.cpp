@@ -52,6 +52,30 @@ namespace wyexpand
     }
     return parents;
   }
+  vecint addExp(const vecint &ord, int exponent, bool minus1)
+  {
+    if (minus1 && exponent == 0)
+      throw std::logic_error("Exponent cannot be 0 on Minus1");
+    if (exponent == 0)
+      return succ(ord);
+    vecint ord1 = ord;
+    if (ord1.size() < exponent)
+    {
+      ord1 = std::vector(exponent, 0);
+      ord1.push_back(1);
+    }
+    else
+    {
+      for (int i = 0; i < exponent; i++)
+      {
+        ord1.at(i) = 0;
+      }
+      ord1[exponent]++;
+    }
+    if (minus1)
+      ord1[0]--;
+    return ord1;
+  }
   /**
    * 查找序列的父项
    * @param seq 序列
@@ -75,6 +99,7 @@ namespace wyexpand
     }
     return seqParents;
   }
+
   Expander::Expander(vecint enterseq)
   {
     if (enterseq.size() < 2)
@@ -133,4 +158,43 @@ namespace wyexpand
     }
     return currentSeq;
   }
+
+  vecint Expander::calcCrossRow(int *exponent)
+  {
+    /**
+Row 0     S1,3,2,5          P-1,[0],[0],2
+Row 1     S0,2,1,3          P-1,-1,-1,[2]
+Row 2     S0,0,0,2          P-1,-1,-1,-1
+
+Row -1,1  S1,2,1,2          P-1,0, 0, 2
+Row 0,1   S0,1,0,1          P-1,-1,-1,-1
+     */
+
+    /**
+Row 0     S1,4,2,5          P-1,[0],[0],2
+Row 1     S0,3,1,3          P-1,-1,-1,[2]
+Row 2     S0,0,0,2          P-1,-1, {-1},-1
+
+Row -1,1   1,3,1,2          P-1,{0}, 0,{2}
+Row 0,1    0,2,0,1          P-1,-1,-1,-1
+
+Row -1,0,1 1,2,1,1          P-1,0 , -1, 2
+Row 0,0,1  0,1,0,0          P-1,-1, -1, -1
+     */
+    /**
+Row 0         S1,3,10           P-1,[0],1
+Row 1         S0,2,7            P-1,-1,[1]
+Row 2         S0,0,5            P-1,-1,-1
+
+Row -1,1      S1,2,5            P-1,{0}, 1
+Row 0,1       S0,1,3            P-1,-1,{1}
+Row 1,1       S0,0,2            P-1,-1,-1
+这里有一个0*n 1的数组，可以shift
+
+Row -1,2      S?,1,2            P?,0,1
+     */
+    vecint lastlevel = {0};
+    vecint level = {1};
+  }
+
 }

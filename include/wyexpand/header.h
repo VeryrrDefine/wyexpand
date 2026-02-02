@@ -20,6 +20,7 @@ namespace wyexpand
     std::map<vecint, vecint> parents;
     vecint initialSeq;
     vecint startExpand();
+    vecint calcCrossRow(int *exponent);
   };
 }
 #endif
