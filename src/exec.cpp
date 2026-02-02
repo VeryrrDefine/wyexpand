@@ -2,11 +2,23 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <sstream>
 // #define MAX_SAFE_INTEGER 9007199254740991.00
 
 #include "wyexpand/header.h"
 using namespace wyexpand;
+vecint toVector(const std::string &str)
+{
+    vecint result;
+    std::stringstream ss(str);
+    std::string item;
+    while (std::getline(ss, item, ','))
+    {
+        result.push_back(std::stoi(item));
+    }
 
+    return result;
+}
 std::string seq_to_string(vecint seq)
 {
     std::string result = "";
@@ -21,9 +33,23 @@ std::string seq_to_string(vecint seq)
     return result;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    vecint a{1, 2};
+    std::vector<std::string> args;
+    for (int i = 0; i < argc; ++i)
+    {
+        args.emplace_back(argv[i]);
+    }
+    vecint a;
+    if (args.size() > 1)
+    {
+        a = toVector(args[1]);
+    }
+    else
+    {
+        a = {1, 2};
+    }
+
     Expander expander(a);
     std::cout << "Initial Sequence: " << seq_to_string(expander.initialSeq) << std::endl;
     vecint result(expander.startExpand());

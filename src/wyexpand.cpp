@@ -77,6 +77,11 @@ namespace wyexpand
   }
   Expander::Expander(vecint enterseq)
   {
+    if (enterseq.size() < 2)
+      throw std::logic_error("Sequence too short");
+    if (enterseq.at(0) != 1)
+      throw std::logic_error("Illegal sequence");
+
     this->initialSeq = enterseq;
   }
   vecint Expander::startExpand()
